@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mon Hôtel{% endblock %}</title>
+    <link href="{% static 'dist/output.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    {% include 'nav.html' %}
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Nos chambres{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Nos chambres</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% for chambre in chambres %}
+    <div class="bg-white rounded-lg shadow p-4">
+        <h2 class="text-xl font-semibold">{{ chambre.nom }}</h2>
+        <p class="text-gray-600">{{ chambre.prix_par_nuit }} € / nuit</p>
+        <a href="{% url 'rooms:detail_chambre' chambre.id %}" class="text-blue-600 hover:underline">
+            Voir les détails
+        </a>
+    </div>
+    {% empty %}
+    <p>Aucune chambre disponible pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}
