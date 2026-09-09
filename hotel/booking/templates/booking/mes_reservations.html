@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes réservations{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl w-full font-bold mt-15 mb-6">Mes réservations</h1>
+
+<div class="grid grid-cols-1 gap-4">
+    {% for reservation in reservations %}
+    <div class="bg-white rounded-lg shadow p-4">
+        <h2 class="text-xl font-semibold">{{ reservation.chambre.nom }}</h2>
+        <p class="text-gray-600">Du {{ reservation.date_arrivee }} au {{ reservation.date_depart }}</p>
+        <p class="text-sm text-gray-400">Réservé le {{ reservation.date_creation|date:"d/m/Y" }}</p>
+    </div>
+    {% empty %}
+    <p>Tu n'as aucune réservation pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

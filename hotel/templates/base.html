@@ -1,18 +1,26 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Mon Hôtel{% endblock %}</title>
     <link href="{% static 'dist/output.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-[#F7F3EC]">
     {% include 'nav.html' %}
 
     <main class="max-w-6xl mx-auto px-4 py-8">
         {% block content %}{% endblock %}
     </main>
 
-    {% include 'footer.html' %}
+    <footer class="bg-gray-800 text-gray-300 py-6">
+        <div class="max-w-6xl mx-auto px-4 text-center text-sm">
+            <p>&copy; {% now "Y" %} Mon Hôtel. Tous droits réservés.</p>
+        </div>
+    </footer>
 </body>
+
 </html>

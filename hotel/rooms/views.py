@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Room
 
 def liste_chambres(request):
-    chambres = Room.objects.filter(disponible=True)
+    chambres = Room.objects.filter(disponibility=True)
     return render(request, 'rooms/liste_chambres.html', {'chambres': chambres})
 
 def detail_chambre(request, chambre_id):
