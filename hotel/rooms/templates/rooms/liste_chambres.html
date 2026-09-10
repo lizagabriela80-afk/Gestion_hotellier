@@ -3,51 +3,96 @@
 {% block title %}Nos chambres{% endblock %}
 
 {% block content %}
-<div class="bg-[#FAF8F4] mt-10 min-h-screen py-12 px-4">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-4xl text-[#1C1C1C] mb-2" style="font-family: 'Playfair Display', serif;">Nos chambres</h1>
-        <p class="text-[#6B685F] mb-1 text-lg italic">Un cocon d'élégance et de confort vous attend, quelle que soit l'expérience que vous recherchez.</p>
-        <p class="text-[#6B685F] mb-10">Découvrez nos chambres, classées par catégorie.</p>
+<style>
+  .room-tile { position: relative; overflow: hidden; }
+  .room-tile img { transition: transform 0.5s ease; }
+  .room-tile:hover img { transform: scale(1.06); }
+  .room-tile .overlay {
+    background: linear-gradient(to top, rgba(16,16,16,0.9) 0%, rgba(16,16,16,0.15) 55%, transparent 100%);
+  }
+  .cta-pill {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .room-tile:hover .cta-pill { opacity: 1; transform: translateY(0); }
+</style>
 
-        {% regroup chambres by get_type_chambre_display as chambres_par_type %}
+<div style="background:#FAFAF8;">
 
-        {% for groupe in chambres_par_type %}
-        <div class="mb-12">
-            <h2 class="text-2xl text-[#1C1C1C] mb-5 pb-2 border-b border-[#E5E1D8]" style="font-family: 'Playfair Display', serif;">{{ groupe.grouper }}</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {% for chambre in groupe.list %}
-                <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                    {% if chambre.image %}
-                    <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="w-full h-52 object-cover">
-                    {% else %}
-                    <div class="w-full h-52 bg-[#E5E1D8] flex items-center justify-center text-[#A8A296] text-sm">
-                        Pas d'image
-                    </div>
-                    {% endif %}
-
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-lg text-[#1C1C1C]" style="font-family: 'Playfair Display', serif;">{{ chambre.nom }}</h3>
-                            <span class="text-xs bg-[#F0E8DA] text-[#8A6B3D] py-1 px-2 rounded-sm whitespace-nowrap">{{ chambre.get_type_chambre_display }}</span>
-                        </div>
-
-                        <p class="text-sm text-[#6B685F] mb-4">{{ chambre.description|truncatewords:12 }}</p>
-
-                        <div class="flex justify-between items-center">
-                            <span class="text-lg text-[#1C1C1C]">{{ chambre.prix }} € <span class="text-xs text-[#8A867A] font-normal">/ nuit</span></span>
-                            <a href="{% url 'rooms:detail_chambre' chambre.id %}" class="text-sm text-[#B08D57] border-b border-[#B08D57] pb-0.5 hover:text-[#8A6B3D] hover:border-[#8A6B3D]">
-                                Voir les détails
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% empty %}
-        <p class="text-[#6B685F]">Aucune chambre disponible pour le moment.</p>
-        {% endfor %}
+  <div class="max-w-6xl mx-auto px-6 pt-16 pb-10">
+    <div class="flex items-end justify-between flex-wrap gap-4">
+      <h1 class="text-5xl md:text-7xl leading-none" style="font-family:'Space Grotesk',sans-serif; color:#101010; font-weight:700;">
+        Nos chambres
+      </h1>
+      <span class="w-3 h-3 rounded-full mb-2" style="background:#3D2FE0;"></span>
     </div>
+    <p class="mt-4 max-w-md text-base" style="color:#6E6B66; font-family:'Manrope',sans-serif;">
+      Une sélection pensée pour chaque façon de voyager — du court séjour à l'échappée qui s'éternise.
+    </p>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 pb-20">
+    {% regroup chambres by get_type_chambre_display as chambres_par_type %}
+
+    {% for groupe in chambres_par_type %}
+    <div class="mb-16 last:mb-0">
+
+      <div class="flex items-baseline justify-between border-b pb-3 mb-6" style="border-color:#E4E1DA;">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Space Grotesk',sans-serif; color:#101010; font-weight:600;">
+          {{ groupe.grouper }}
+        </h2>
+        <span class="text-sm" style="color:#A6A29A; font-family:'Manrope',sans-serif;">
+          {{ groupe.list|length }} chambre{{ groupe.list|length|pluralize }}
+        </span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {% for chambre in groupe.list %}
+        <div class="room-tile {% if forloop.first %}col-span-2 row-span-2{% endif %} rounded-2xl"
+             style="{% if forloop.first %}aspect-ratio:1/1;{% else %}aspect-ratio:1/1.1;{% endif %} background:#101010;">
+
+          {% if chambre.image %}
+          <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="w-full h-full object-cover">
+          {% else %}
+          <div class="w-full h-full flex items-center justify-center" style="background:#1C1C1C;">
+            <span class="text-sm" style="color:#5C5C5C; font-family:'Manrope',sans-serif;">Pas d'image</span>
+          </div>
+          {% endif %}
+
+          <div class="overlay absolute inset-0"></div>
+
+          <div class="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+            <div class="flex items-end justify-between gap-2">
+              <div>
+                <h3 class="{% if forloop.first %}text-2xl md:text-3xl{% else %}text-base md:text-lg{% endif %}"
+                    style="font-family:'Space Grotesk',sans-serif; color:#FAFAF8; font-weight:600;">
+                  {{ chambre.nom }}
+                </h3>
+                {% if forloop.first %}
+                <p class="text-sm mt-1 max-w-xs" style="color:#D8D5CE; font-family:'Manrope',sans-serif;">
+                  {{ chambre.description|truncatewords:16 }}
+                </p>
+                {% endif %}
+              </div>
+              <span class="text-sm md:text-base whitespace-nowrap" style="color:#FAFAF8; font-family:'Manrope',sans-serif; font-weight:600;">
+                {{ chambre.prix }} €
+              </span>
+            </div>
+
+            <a href="{% url 'rooms:detail_chambre' chambre.id %}"
+               class="cta-pill inline-flex items-center gap-1 mt-3 px-4 py-2 rounded-full text-sm"
+               style="background:#3D2FE0; color:#FAFAF8; font-family:'Manrope',sans-serif; font-weight:500;">
+              Voir la chambre
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% empty %}
+    <p style="color:#6E6B66; font-family:'Manrope',sans-serif;">Aucune chambre disponible pour le moment.</p>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}
