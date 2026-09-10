@@ -3,26 +3,42 @@
 {% block title %}Nos chambres{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold mt-15 mb-6">Nos chambres</h1>
+<div class="bg-[#FAF8F4] min-h-screen py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-4xl text-[#1C1C1C] mb-2" style="font-family: 'Playfair Display', serif;">Nos chambres</h1>
+        <p class="text-[#6B685F] mb-10">Découvrez le confort et l'élégance de nos chambres.</p>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {% for chambre in chambres %}
-    <div class="bg-white rounded-lg shadow p-4">
-        {% if chambre.image %}
-        <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="w-full h-48 object-cover rounded-md mb-3">
-        {% else %}
-        <div class="w-full h-48 bg-gray-200 rounded-md mb-3 flex items-center justify-center text-gray-400">
-            Pas d'image
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for chambre in chambres %}
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                {% if chambre.image %}
+                <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="w-full h-52 object-cover">
+                {% else %}
+                <div class="w-full h-52 bg-[#E5E1D8] flex items-center justify-center text-[#A8A296] text-sm">
+                    Pas d'image
+                </div>
+                {% endif %}
+
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg text-[#1C1C1C]" style="font-family: 'Playfair Display', serif;">{{ chambre.nom }}</h3>
+                        <span class="text-xs bg-[#F0E8DA] text-[#8A6B3D] py-1 px-2 rounded-sm whitespace-nowrap">{{ chambre.get_type_chambre_display }}</span>
+                    </div>
+
+                    <p class="text-sm text-[#6B685F] mb-4">{{ chambre.description|truncatewords:12 }}</p>
+
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg text-[#1C1C1C]">{{ chambre.prix }} € <span class="text-xs text-[#8A867A] font-normal">/ nuit</span></span>
+                        <a href="{% url 'rooms:detail_chambre' chambre.id %}" class="text-sm text-[#B08D57] border-b border-[#B08D57] pb-0.5 hover:text-[#8A6B3D] hover:border-[#8A6B3D]">
+                            Voir les détails
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-[#6B685F] col-span-3">Aucune chambre disponible pour le moment.</p>
+            {% endfor %}
         </div>
-        {% endif %}
-        <h2 class="text-xl font-semibold">{{ chambre.nom }}</h2>
-        <p class="text-gray-600">{{ chambre.prix }} € / nuit</p>
-        <a href="{% url 'rooms:detail_chambre' chambre.id %}" class="text-blue-600 hover:underline">
-            Voir les détails
-        </a>
     </div>
-    {% empty %}
-    <p>Aucune chambre disponible pour le moment.</p>
-    {% endfor %}
 </div>
 {% endblock %}
