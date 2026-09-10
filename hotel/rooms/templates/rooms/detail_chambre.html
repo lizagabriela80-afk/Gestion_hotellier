@@ -3,35 +3,75 @@
 {% block title %}{{ chambre.nom }}{% endblock %}
 
 {% block content %}
-<div class="mt-15">
-    <a href="{% url 'rooms:liste_chambres' %}" class="text-blue-600 hover:underline">&larr; Retour aux chambres</a>
-</div>
+<div class="max-w-5xl mx-auto px-4 mt-24 mb-16">
 
-<div class="mt-4 bg-white rounded-lg shadow overflow-hidden md:flex">
-    {% if chambre.image %}
-    <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="md:w-1/2 h-64 md:h-auto object-cover">
-    {% endif %}
+    <a href="{% url 'rooms:liste_chambres' %}"
+        class="text-sm text-[#8A867A] hover:text-[#B08D57] transition-colors duration-200 inline-flex items-center gap-1 mb-6">
+        &larr; Retour aux chambres
+    </a>
 
-    <div class="p-6 md:w-1/2">
-        <h1 class="text-3xl font-bold mb-2">{{ chambre.nom }}</h1>
-        <p class="text-gray-500 mb-4">{{ chambre.get_type_chambre_display }}</p>
-
-        <p class="text-gray-700 mb-4">{{ chambre.description }}</p>
-
-        <ul class="text-sm text-gray-600 mb-6 space-y-1">
-            <li>Capacité : {{ chambre.capacite }} personne{{ chambre.capacite|pluralize }}</li>
-            <li>Prix : <span class="font-semibold text-gray-900">{{ chambre.prix}} € / nuit</span></li>
-        </ul>
-
-        {% if chambre.disponible %}
-            <a href="#" class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
-                Réserver cette chambre
-            </a>
+    <div class="bg-white rounded-lg overflow-hidden border border-black/[0.08] shadow-sm md:flex">
+        {% if chambre.image %}
+        <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="md:w-1/2 h-72 md:h-auto object-cover">
         {% else %}
-            <span class="inline-block bg-gray-300 text-gray-600 px-6 py-3 rounded-lg cursor-not-allowed">
-                Indisponible
-            </span>
+        <div class="md:w-1/2 h-72 bg-[#E5E1D8] flex items-center justify-center text-[#A8A296] text-sm">
+            Pas d'image
+        </div>
         {% endif %}
+
+        <div class="p-8 md:w-1/2">
+            <span class="text-xs bg-[#F0E8DA] text-[#8A6B3D] py-1 px-2 rounded-sm">{{chambre.get_type_chambre_display}}</span>
+
+            <h1 class="text-3xl mt-3 mb-4 text-[#1C1C1C]" style="font-family: 'Playfair Display', serif;">{{chambre.nom}}</h1>
+
+            <p class="text-[#6B685F] leading-relaxed mb-6">{{chambre.description}}</p>
+
+            <ul class="text-sm text-[#6B685F] mb-6 space-y-2 border-t border-black/[0.06] pt-4">
+                <li class="flex justify-between">
+                    <span>Capacité</span>
+                    <span class="text-[#1C1C1C]">{{ chambre.capacity }} personne{{ chambre.capacity|pluralize }}</span>
+                </li>
+                <li class="flex justify-between">
+                    <span>Prix</span>
+                    <span class="text-lg text-[#1C1C1C]">{{ chambre.prix }} € <span class="text-xs text-[#8A867A]">/
+                            nuit</span></span>
+                </li>
+            </ul>
+
+            {% if chambre.disponibility %}
+            <form method="post" action="{% url 'booking:reserver' chambre.id %}"
+                class="border-t border-black/[0.06] pt-6 space-y-4">
+                {% csrf_token %}
+                {% if messages %}
+                {% for message in messages %}
+                <p class="text-sm text-[#B5654A]">{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-xs text-[#6B685F] mb-1">Arrivée</label>
+                        <input type="date" name="date_arrivee" required
+                            class="w-full border border-black/[0.12] rounded px-3 py-2 text-sm text-[#1C1C1C] focus:outline-none focus:border-[#B08D57] transition-colors duration-200">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs text-[#6B685F] mb-1">Départ</label>
+                        <input type="date" name="date_depart" required
+                            class="w-full border border-black/[0.12] rounded px-3 py-2 text-sm text-[#1C1C1C] focus:outline-none focus:border-[#B08D57] transition-colors duration-200">
+                    </div>
+                </div>
+                <button type="submit"
+                    class="w-full bg-[#1C1C1C] text-white px-6 py-3 rounded-lg hover:bg-[#B08D57] transition-colors duration-300">
+                    Réserver cette chambre
+                </button>
+            </form>
+            {% else %}
+            <span
+                class="inline-flex items-center gap-2 bg-[#F5E6E2] text-[#B5654A] px-6 py-3 rounded-lg w-full justify-center mt-6">
+                <span class="w-2 h-2 rounded-full bg-[#B5654A]"></span>
+                Occupé
+            </span>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

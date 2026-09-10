@@ -5,6 +5,14 @@
 {% block content %}
 <h1 class="text-3xl w-full font-bold mt-15 mb-6">Mes réservations</h1>
 
+{% if messages %}
+<div class="mb-4 space-y-2">
+    {% for message in messages %}
+    <p class="text-sm text-green-700 bg-green-50 border border-green-200 rounded px-3 py-2">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
 <div class="grid grid-cols-1 gap-4">
     {% for reservation in reservations %}
     <div class="bg-white rounded-lg shadow p-4">

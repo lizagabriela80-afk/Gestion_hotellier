@@ -5,7 +5,7 @@ def liste_chambres(request):
     chambres_par_categorie = []
 
     for code, label in Room.ROOM_TYPES:
-        chambres = Room.objects.filter(disponibility=True, type_chambre=code)
+        chambres = Room.objects.filter(type_chambre=code)
         if chambres.exists():
             chambres_par_categorie.append({
                 'label': label,
