@@ -20,23 +20,19 @@
         <form method="GET" action="{% url 'rooms:liste_chambres' %}"
             class="relative bg-white rounded-lg p-5 mt-7 flex gap-4 items-end flex-wrap max-w-[640px]">
             <div>
-                <label class="block text-xs text-[#6B685F] mb-2">Arrivée</label>
-                <input type="date" name="date_arrivee"
-                     class="border border-[rgba(0,0,0,0.15)] rounded p-2 text-sm text-[#1C1C1C]">
+                <label class="block text-xs text-[#6B685F] mb-2">Nom de la chambre</label>
+                <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Ex : Suite Deluxe" class="border border-[rgba(0,0,0,0.15)] rounded p-2 text-sm text-[#1C1C1C]">
             </div>
             <div>
-                <label class="block text-xs text-[#6B685F] mb-2">Départ</label>
-                <input type="date" name="date_depart"
-                    style="border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; padding: 8px 10px; font-size: 14px; color: #1C1C1C;"
-                    class="border border-[rgba(0,0,0,0.15)] rounded py-2 px-[10px] text-sm text-[#1C1C1C]">
+                <label class="block text-xs text-[#6B685F] mb-2">Type de chambre</label>
+                <select name="type_chambre" class="border border-[rgba(0,0,0,0.15)] rounded p-2 text-sm text-[#1C1C1C]">
+                    <option value="single" {% if request.GET.type_chambre == 'single' %}selected{% endif %}>Simple</option>
+                    <option value="double" {% if request.GET.type_chambre == 'double' %}selected{% endif %}>Double</option>
+                    <option value="suite" {% if request.GET.type_chambre == 'suite' %}selected{% endif %}>Suite</option>
+                    
+                </select>
             </div>
-            <div>
-                <label class="block text-xs text-[#6B685F] mb-2">Personnes</label>
-                <input type="number" name="capacite" min="1" value="1"
-                   class="w-[#70px] border border-[rgba(0,0,0,0.15)] rounded py-2 px-[10px] text-sm text-[#1C1C1C]" >
-            </div>
-            <button type="submit"
-                class="bg-[#1C1C1C] text-white border-none py-[10px] px-6 text-sm round">
+            <button type="submit" class="bg-[#1C1C1C] text-white border-none py-[10px] px-6 text-sm round">
                 Rechercher
             </button>
         </form>
