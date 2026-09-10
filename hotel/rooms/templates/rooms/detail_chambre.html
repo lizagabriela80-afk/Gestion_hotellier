@@ -20,7 +20,7 @@
 
         <ul class="text-sm text-gray-600 mb-6 space-y-1">
             <li>Capacité : {{ chambre.capacite }} personne{{ chambre.capacite|pluralize }}</li>
-            <li>Prix : <span class="font-semibold text-gray-900">{{ chambre.prix_par_nuit }} € / nuit</span></li>
+            <li>Prix : <span class="font-semibold text-gray-900">{{ chambre.prix}} € / nuit</span></li>
         </ul>
 
         {% if chambre.disponible %}
