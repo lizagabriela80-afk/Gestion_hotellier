@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Room
 
 def liste_chambres(request):
-    chambres = Room.objects.filter(disponibility=True)
+    chambres = Room.objects.filter(disponibility=True).order_by('type_chambre', 'nom')
 
     q = request.GET.get('q')
     if q:
