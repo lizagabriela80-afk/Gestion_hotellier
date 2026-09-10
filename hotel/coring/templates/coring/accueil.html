@@ -102,7 +102,7 @@
             {% for chambre in chambres_vedette %}
             <div class="bg-white rounded-lg overflow-hidden border border-[rgba(0,0,0,0.08)]">
                 {% if chambre.image %}
-                <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="w-full h-[200px] object-cover block">
+                <img src="{{chambre.image.url}}" alt="{{chambre.nom}}" class="w-full h-[200px] object-cover block">
                 {% else %}
                 <div class="h-[200px] bg-[#E5E1D8] flex items-center justify-center text-[#A8A296] text-[13px]">
                     Pas d'image
@@ -114,8 +114,7 @@
                         <h3 class="font-['Playfair_Display',_serif] text-lg texte-[#1C1C1C] font-normal m-0 ">
                             {{ chambre.nom }}</h3>
                         <span
-                            class="text-xs bg-[#F0E8DA] text-[#8A6B3D] py-1 px-2 rounded-sm whitespace-nowrap">{{chambre.get_type_chambre_display
-                            }}</span>
+                            class="text-xs bg-[#F0E8DA] text-[#8A6B3D] py-1 px-2 rounded-sm whitespace-nowrap">{{chambre.get_type_chambre_display}}</span>
                     </div>
                     <p class="text-xs tex-[#6B685F] m-0 mb-3.5">{{ chambre.description|truncatewords:10 }}
                     </p>
