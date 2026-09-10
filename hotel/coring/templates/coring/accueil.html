@@ -16,17 +16,41 @@
             class="inline-block bg-[#B08D57] no-underline text-white text-[14px] tracking-[0.5px] py-3 px-7 rounded-sm">
             Voir nos chambres
         </a>
+
+        <form method="GET" action="{% url 'rooms:liste_chambres' %}"
+            class="relative bg-white rounded-lg p-5 mt-7 flex gap-4 items-end flex-wrap max-w-[640px]">
+            <div>
+                <label class="block text-xs text-[#6B685F] mb-2">Arrivée</label>
+                <input type="date" name="date_arrivee"
+                     class="border border-[rgba(0,0,0,0.15)] rounded p-2 text-sm text-[#1C1C1C]">
+            </div>
+            <div>
+                <label class="block text-xs text-[#6B685F] mb-2">Départ</label>
+                <input type="date" name="date_depart"
+                    style="border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; padding: 8px 10px; font-size: 14px; color: #1C1C1C;"
+                    class="border border-[rgba(0,0,0,0.15)] rounded py-2 px-[10px] text-sm text-[#1C1C1C]">
+            </div>
+            <div>
+                <label class="block text-xs text-[#6B685F] mb-2">Personnes</label>
+                <input type="number" name="capacite" min="1" value="1"
+                   class="w-[#70px] border border-[rgba(0,0,0,0.15)] rounded py-2 px-[10px] text-sm text-[#1C1C1C]" >
+            </div>
+            <button type="submit"
+                class="bg-[#1C1C1C] text-white border-none py-[10px] px-6 text-sm round">
+                Rechercher
+            </button>
+        </form>
     </div>
 </div>
 
 
 
 <div class="bg-[#F7F3EC] border-b border-b-[rgba(0,0,0,0.06)] p-8">
-    <div
-        class="max-w-[960px] m-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 text-center">
+    <div class="max-w-[960px] m-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 text-center">
 
         <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6" class="mx-auto mb-[10px] w-[26px] h-[26px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"
+                class="mx-auto mb-[10px] w-[26px] h-[26px">
                 <path d="M5 12.55a11 11 0 0 1 14.08 0" />
                 <path d="M1.42 9a16 16 0 0 1 21.16 0" />
                 <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
@@ -36,7 +60,8 @@
         </div>
 
         <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6" class="w-[26px] h-[26px] mx-auto mb-[10px]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"
+                class="w-[26px] h-[26px] mx-auto mb-[10px]">
                 <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
                 <path d="M3 8h14v6a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
                 <line x1="6" y1="2" x2="6" y2="4" />
@@ -47,7 +72,8 @@
         </div>
 
         <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6" class="w-[26px] h-[26px] mx-auto mb-[10px]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"
+                class="w-[26px] h-[26px] mx-auto mb-[10px]">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <path d="M9 17V7h4a3 3 0 0 1 0 6H9" />
             </svg>
@@ -55,7 +81,8 @@
         </div>
 
         <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6" class="w-[26px] h-[26px] mx-auto mb-[10px]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"
+                class="w-[26px] h-[26px] mx-auto mb-[10px]">
                 <circle cx="12" cy="12" r="9" />
                 <polyline points="12 7 12 12 15.5 14" />
             </svg>
