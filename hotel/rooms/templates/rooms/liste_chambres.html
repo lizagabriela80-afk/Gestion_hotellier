@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
+ 
 {% block title %}Nos chambres{% endblock %}
-
+ 
 {% block content %}
 <style>
   .room-tile { position: relative; overflow: hidden; }
-  .room-tile img { transition: transform 0.5s ease; }
+  .room-tile img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
   .room-tile:hover img { transform: scale(1.06); }
+  .room-tile.is-occupied img { filter: grayscale(0.6); }
   .room-tile .overlay {
-    background: linear-gradient(to top, rgba(16,16,16,0.9) 0%, rgba(16,16,16,0.15) 55%, transparent 100%);
+    background: linear-gradient(to top, rgba(16,16,16,0.92) 0%, rgba(16,16,16,0.15) 55%, transparent 100%);
   }
   .cta-pill {
     opacity: 0;
@@ -16,10 +18,13 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
   .room-tile:hover .cta-pill { opacity: 1; transform: translateY(0); }
+  .room-tile .tile-index {
+    font-variant-numeric: tabular-nums;
+  }
 </style>
-
+ 
 <div style="background:#FAFAF8;">
-
+ 
   <div class="max-w-6xl mx-auto px-6 pt-16 pb-10">
     <div class="flex items-end justify-between flex-wrap gap-4">
       <h1 class="text-5xl md:text-7xl leading-none mt-10" style="font-family:'Space Grotesk',sans-serif; color:#101010; font-weight:700;">
@@ -31,13 +36,13 @@
       Une sélection pensée pour chaque façon de voyager — du court séjour à l'échappée qui s'éternise.
     </p>
   </div>
-
+ 
   <div class="max-w-6xl mx-auto px-6 pb-20">
     {% regroup chambres by get_type_chambre_display as chambres_par_type %}
-
+ 
     {% for groupe in chambres_par_type %}
     <div class="mb-16 last:mb-0">
-
+ 
       <div class="flex items-baseline justify-between border-b pb-3 mb-6" style="border-color:#E4E1DA;">
         <h2 class="text-2xl md:text-3xl" style="font-family:'Space Grotesk',sans-serif; color:#101010; font-weight:600;">
           {{ groupe.grouper }}
@@ -46,12 +51,16 @@
           {{ groupe.list|length }} chambre{{ groupe.list|length|pluralize }}
         </span>
       </div>
-
+ 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
         {% for chambre in groupe.list %}
-        <div class="room-tile {% if forloop.first %}col-span-2 row-span-2{% endif %} rounded-2xl"
+        <div class="room-tile {% if not chambre.disponibility %}is-occupied{% endif %} {% if forloop.first %}col-span-2 row-span-2{% endif %} rounded-2xl"
              style="{% if forloop.first %}aspect-ratio:1/1;{% else %}aspect-ratio:1/1.1;{% endif %} background:#101010;">
-
+ 
+          <span class="tile-index absolute top-4 left-4 text-xs z-10" style="color:rgba(250,250,248,0.55); font-family:'Manrope',sans-serif;">
+            {{ forloop.counter|stringformat:"02d" }}
+          </span>
+ 
           {% if chambre.image %}
           <img src="{{ chambre.image.url }}" alt="{{ chambre.nom }}" class="w-full h-full object-cover">
           {% else %}
@@ -59,9 +68,17 @@
             <span class="text-sm" style="color:#5C5C5C; font-family:'Manrope',sans-serif;">Pas d'image</span>
           </div>
           {% endif %}
-
+ 
           <div class="overlay absolute inset-0"></div>
-
+ 
+          {% if not chambre.disponibility %}
+          <div class="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full"
+               style="background:rgba(250,250,248,0.12); backdrop-filter:blur(4px);">
+            <span class="w-1.5 h-1.5 rounded-full" style="background:#E0574A;"></span>
+            <span class="text-xs" style="color:#FAFAF8; font-family:'Manrope',sans-serif; font-weight:500;">Occupé</span>
+          </div>
+          {% endif %}
+ 
           <div class="absolute bottom-0 left-0 right-0 p-4 md:p-5">
             <div class="flex items-end justify-between gap-2">
               <div>
@@ -73,18 +90,38 @@
                 <p class="text-sm mt-1 max-w-xs" style="color:#D8D5CE; font-family:'Manrope',sans-serif;">
                   {{ chambre.description|truncatewords:16 }}
                 </p>
+                <div class="flex items-center gap-1.5 mt-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D8D5CE" stroke-width="1.8">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                  <span class="text-xs" style="color:#D8D5CE; font-family:'Manrope',sans-serif;">{{ chambre.capacity }} pers.</span>
+                </div>
                 {% endif %}
               </div>
               <span class="text-sm md:text-base whitespace-nowrap" style="color:#FAFAF8; font-family:'Manrope',sans-serif; font-weight:600;">
-                {{ chambre.prix }} €
+                {{ chambre.prix|intcomma }} €
               </span>
             </div>
-
+ 
+            {% if chambre.disponibility %}
             <a href="{% url 'rooms:detail_chambre' chambre.id %}"
-               class="cta-pill inline-flex items-center gap-1 mt-3 px-4 py-2 rounded-full text-sm"
+               class="cta-pill inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full text-sm"
                style="background:#3D2FE0; color:#FAFAF8; font-family:'Manrope',sans-serif; font-weight:500;">
               Voir la chambre
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FAFAF8" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
             </a>
+            {% else %}
+            <a href="{% url 'rooms:detail_chambre' chambre.id %}"
+               class="cta-pill inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full text-sm"
+               style="background:rgba(250,250,248,0.15); color:#D8D5CE; font-family:'Manrope',sans-serif; font-weight:500;">
+              Voir la chambre
+            </a>
+            {% endif %}
           </div>
         </div>
         {% endfor %}
@@ -96,3 +133,4 @@
   </div>
 </div>
 {% endblock %}
+ 
