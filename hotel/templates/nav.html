@@ -32,11 +32,8 @@
                 </button>
             </form>
             {% else %}
-            <a href="{% url 'login' %}"
-                class="text-[#B08D57] no-underline text-sm py-2 px-5 border border-[#B08D57] rounded-sm
-                transition-all duration-300 hover:bg-[#B08D57] hover:text-white hover:shadow-[0_6px_16px_rgba(176,141,87,0.35)] hover:-translate-y-[1px] active:translate-y-0">
-                Connexion
-            </a>
+            <a href="{% url 'inscription' %}" class="text-sm text-[#1C1C1C]">Créer un compte</a>
+            <a href="{% url 'login' %}" class="text-[#B08D57] no-underline text-sm py-2 px-5 border border-[#B08D57] rounded-sm">Connexion</a>
             {% endif %}
         </div>
     </div>
