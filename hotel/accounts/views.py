@@ -15,7 +15,7 @@ def inscription(request):
             Profile.objects.create(user=user, telephone=form.cleaned_data['telephone'])
             login(request, user)
             messages.success(request, "Bienvenue ! Ton compte a été créé.")
-            return redirect('coring:accueil')  # Redirige vers la page d'accueil après l'inscription
+            return redirect('core:accueil')  # Redirige vers la page d'accueil après l'inscription
     else:
         form = InscriptionForm()
 
