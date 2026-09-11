@@ -4,21 +4,47 @@
  
 {% block content %}
  
-<div style="background-image: url('/media/Hotel_facade.jpg')"
-    class="relative w-full h-[460px] md:h-[520px] mt-5 bg-cover bg-center flex items-end p-6 md:p-10 z-0">
+<style>
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+ 
+.stagger > *:nth-child(1) { transition-delay: 0ms; }
+.stagger > *:nth-child(2) { transition-delay: 90ms; }
+.stagger > *:nth-child(3) { transition-delay: 180ms; }
+.stagger > *:nth-child(4) { transition-delay: 270ms; }
+.stagger > *:nth-child(5) { transition-delay: 360ms; }
+ 
+.magnetic { transition: transform 0.15s ease-out; }
+</style>
+ 
+<!-- HERO -->
+<div id="hero" style="background-image: url('/media/Hotel_facade.jpg')"
+    class="relative w-full h-[460px] md:h-[560px] mt-5 bg-cover bg-center flex items-end p-6 md:p-10 z-0 overflow-hidden">
     <div class="absolute inset-0 bg-[rgba(20,18,15,0.45)]"></div>
-    <div class="relative text-white max-w-[480px] animate-[fadeInUp_0.8s_ease-out]">
-        <h1 class="font-['Playfair_Display',_serif] text-[28px] md:text-[38px] font-normal m-0 mb-3 mt-6 md:mt-10 leading-[1.2]">
+ 
+    <div class="relative text-white max-w-[480px]">
+        <h1 style="animation: fadeInUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;"
+            class="font-['Playfair_Display',_serif] text-[28px] md:text-[38px] font-normal m-0 mb-3 mt-6 md:mt-10 leading-[1.2]">
             Bienvenue à Endrias Hôtel</h1>
-        <p class="text-[14px] md:text-[15px] m-0 mb-6 text-[rgba(255,255,255,0.85)]">Confort, élégance et détente au
-            cœur de la ville.</p>
-        <a href="{% url 'rooms:liste_chambres' %}"
-            class="inline-block bg-[#B08D57] no-underline text-white text-[14px] tracking-[0.5px] py-3 px-7 rounded-sm
-            transition-all duration-300 ease-out hover:bg-[#8A6B3D] hover:shadow-[0_8px_20px_rgba(176,141,87,0.4)] hover:-translate-y-[2px]">
+        <p style="animation: fadeInUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.28s both;"
+            class="text-[14px] md:text-[15px] m-0 mb-6 text-[rgba(255,255,255,0.85)]">
+            Confort, élégance et détente au cœur de la ville.</p>
+        <a href="{% url 'rooms:liste_chambres' %}" style="animation: fadeInUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.46s both;"
+            class="magnetic inline-block bg-[#B08D57] no-underline text-white text-[14px] tracking-[0.5px] py-3 px-7 rounded-sm
+            transition-colors duration-300 ease-out hover:bg-[#8A6B3D] hover:shadow-[0_8px_20px_rgba(176,141,87,0.4)]">
             Voir nos chambres
         </a>
  
         <form method="GET" action="{% url 'rooms:liste_chambres' %}"
+            style="animation: fadeInUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.64s both;"
             class="relative bg-white rounded-lg p-5 mt-7 flex gap-4 items-end flex-wrap max-w-[640px]
             shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
             <div>
@@ -44,11 +70,17 @@
             </button>
         </form>
     </div>
+ 
+    <a href="#reassurance" class="absolute left-1/2 -translate-x-1/2 bottom-5 text-white/80 hover:text-white transition-colors duration-300 animate-bounce">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 9l6 6 6-6"/>
+        </svg>
+    </a>
 </div>
  
- 
-<div class="bg-[#F7F3EC] border-b border-b-[rgba(0,0,0,0.06)] p-8">
-    <div class="max-w-[960px] m-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+<!-- BANDE DE REASSURANCE -->
+<div id="reassurance" class="bg-[#F7F3EC] border-b border-b-[rgba(0,0,0,0.06)] p-8">
+    <div class="reveal stagger max-w-[960px] m-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
  
         <div class="group cursor-default transition-transform duration-300 hover:-translate-y-1">
             <svg viewBox="0 0 24 24" fill="none" stroke="#B08D57" stroke-width="1.6"
@@ -94,16 +126,45 @@
     </div>
 </div>
  
+<!-- CHIFFRES CLES -->
+<div class="reveal bg-white py-14 px-8 border-b border-black/[0.06]">
+    <div class="stagger max-w-[900px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+            <p class="font-['Playfair_Display',_serif] text-4xl text-[#1C1C1C] m-0">
+                <span class="counter" data-target="12" data-decimals="0">0</span>+
+            </p>
+            <p class="text-xs text-[#8A867A] uppercase tracking-wide mt-2">Chambres</p>
+        </div>
+        <div>
+            <p class="font-['Playfair_Display',_serif] text-4xl text-[#1C1C1C] m-0">
+                <span class="counter" data-target="500" data-decimals="0">0</span>+
+            </p>
+            <p class="text-xs text-[#8A867A] uppercase tracking-wide mt-2">Voyageurs accueillis</p>
+        </div>
+        <div>
+            <p class="font-['Playfair_Display',_serif] text-4xl text-[#1C1C1C] m-0">
+                <span class="counter" data-target="4.9" data-decimals="1">0</span>
+            </p>
+            <p class="text-xs text-[#8A867A] uppercase tracking-wide mt-2">Note moyenne</p>
+        </div>
+        <div>
+            <p class="font-['Playfair_Display',_serif] text-4xl text-[#1C1C1C] m-0">24/7</p>
+            <p class="text-xs text-[#8A867A] uppercase tracking-wide mt-2">Réception</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- CHAMBRES EN VEDETTE -->
 <div class="py-16 px-8">
     <div class="max-w-[1100px] mx-auto">
  
         {% if chambres_vedette %}
-        <p class="text-[12px] text-[#B08D57] uppercase tracking-[1px] m-0 mb-3">Sélection</p>
-        <h2 class="font-['Playfair_Display',_serif] text-[32px] text-[#1C1C1C] font-normal m-0 mb-10">
+        <p class="reveal text-[12px] text-[#B08D57] uppercase tracking-[1px] m-0 mb-3">Sélection</p>
+        <h2 class="reveal font-['Playfair_Display',_serif] text-[32px] text-[#1C1C1C] font-normal m-0 mb-10">
             Chambres en vedette
         </h2>
  
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="reveal stagger grid grid-cols-1 md:grid-cols-3 gap-6">
             {% for chambre in chambres_vedette %}
             <div class="bg-white rounded-lg overflow-hidden border border-[rgba(0,0,0,0.08)]
                 transition-all duration-300 hover:shadow-[0_12px_28px_rgba(0,0,0,0.12)] hover:-translate-y-1 group">
@@ -144,40 +205,44 @@
     </div>
 </div>
  
-<!-- Galerie photo -->
+<!-- GALERIE PHOTO -->
 <div class="bg-[#F7F3EC] py-16 px-8">
     <div class="max-w-[1100px] mx-auto">
-        <p class="text-[12px] text-[#B08D57] uppercase tracking-[1px] m-0 mb-3">L'établissement</p>
-        <h2 class="font-['Playfair_Display',_serif] text-[32px] text-[#1C1C1C] font-normal m-0 mb-10">
+        <p class="reveal text-[12px] text-[#B08D57] uppercase tracking-[1px] m-0 mb-3">L'établissement</p>
+        <h2 class="reveal font-['Playfair_Display',_serif] text-[32px] text-[#1C1C1C] font-normal m-0 mb-10">
             Découvrez notre hôtel
         </h2>
  
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[160px] md:auto-rows-[250px]">
+        <div class="reveal stagger grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[160px] md:auto-rows-[250px]">
  
-            <div class="col-span-2 row-span-2 overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+            <button onclick="openLightbox('/media/Hotel_facade.jpg')"
+                class="col-span-2 row-span-2 overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl cursor-zoom-in">
                 <img src="/media/Hotel_facade.jpg" alt="Façade de l'hôtel"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            </div>
+            </button>
  
-            <div class="overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+            <button onclick="openLightbox('/media/hotel_restaurant.webp')"
+                class="overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl cursor-zoom-in">
                 <img src="/media/hotel_restaurant.webp" alt="Restaurant"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            </div>
+            </button>
  
-            <div class="overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+            <button onclick="openLightbox('/media/95ffb7746a9404a751718c5b6dec96a1.jpg')"
+                class="overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl cursor-zoom-in">
                 <img src="/media/95ffb7746a9404a751718c5b6dec96a1.jpg" alt="Piscine"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            </div>
+            </button>
  
-            <div class="overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+            <button onclick="openLightbox('/media/bar restaurant.webp')"
+                class="overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl cursor-zoom-in">
                 <img src="/media/bar restaurant.webp" alt="Bar"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            </div>
+            </button>
  
             <div class="overflow-hidden rounded-lg relative shadow-md transition-shadow duration-300 hover:shadow-xl group">
                 <img src="/media/chambre_de_luxe_6.webp" alt="Chambre"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                <a href="#"
+                <a href="{% url 'rooms:liste_chambres' %}"
                     class="absolute inset-0 bg-[rgba(20,18,15,0.45)] flex items-center justify-center text-white text-sm no-underline
                     opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Voir toutes les photos
@@ -188,15 +253,15 @@
     </div>
 </div>
  
-<!-- Avis clients -->
+<!-- AVIS CLIENTS -->
 <div class="bg-white py-16 px-8">
     <div class="max-w-[1100px] mx-auto">
-        <p class="text-[12px] text-[#B08D57] uppercase tracking-[1px] m-0 mb-3">Ils nous ont fait confiance</p>
-        <h2 class="font-['Playfair_Display',_serif] text-[32px] text-[#1C1C1C] font-normal m-0 mb-10">
+        <p class="reveal text-[12px] text-[#B08D57] uppercase tracking-[1px] m-0 mb-3">Ils nous ont fait confiance</p>
+        <h2 class="reveal font-['Playfair_Display',_serif] text-[32px] text-[#1C1C1C] font-normal m-0 mb-10">
             Avis de nos clients
         </h2>
  
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="reveal stagger grid grid-cols-1 md:grid-cols-3 gap-8">
  
             <div class="border border-[rgba(0,0,0,0.08)] rounded-lg p-7 transition-all duration-300 hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1">
                 <div class="flex gap-1 mb-4">
@@ -250,12 +315,101 @@
     </div>
 </div>
  
-<style>
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+<!-- BOUTON FLOTTANT -->
+<div id="floatCta" class="fixed bottom-6 right-6 z-40 opacity-0 pointer-events-none translate-y-4 transition-all duration-500">
+    <a href="{% url 'rooms:liste_chambres' %}"
+        class="magnetic inline-flex items-center gap-2 bg-[#1C1C1C] text-white text-sm px-5 py-3 rounded-full shadow-lg hover:bg-[#B08D57] transition-colors duration-300">
+        Réserver maintenant
+    </a>
+</div>
+ 
+<!-- LIGHTBOX GALERIE -->
+<div id="lightbox" onclick="closeLightbox()"
+    class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-6 cursor-zoom-out">
+    <img id="lightboxImg" src="" alt="" class="max-w-full max-h-full rounded-lg">
+</div>
+ 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+ 
+    // Scroll reveal
+    var revealEls = document.querySelectorAll('.reveal');
+    var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { revealObserver.observe(el); });
+ 
+    // Compteurs animés
+    var counters = document.querySelectorAll('.counter');
+    var counterObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                var el = entry.target;
+                var target = parseFloat(el.dataset.target);
+                var decimals = parseInt(el.dataset.decimals || '0');
+                var duration = 1400;
+                var start = performance.now();
+ 
+                function tick(now) {
+                    var progress = Math.min((now - start) / duration, 1);
+                    var eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = (target * eased).toFixed(decimals);
+                    if (progress < 1) requestAnimationFrame(tick);
+                    else el.textContent = target.toFixed(decimals);
+                }
+                requestAnimationFrame(tick);
+                counterObserver.unobserve(el);
+            }
+        });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { counterObserver.observe(el); });
+ 
+    // Bouton flottant : apparaît quand on quitte le hero
+    var hero = document.getElementById('hero');
+    var floatCta = document.getElementById('floatCta');
+    var heroObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                floatCta.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                floatCta.classList.remove('opacity-100', 'translate-y-0');
+            } else {
+                floatCta.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                floatCta.classList.add('opacity-100', 'translate-y-0');
+            }
+        });
+    }, { threshold: 0 });
+    heroObserver.observe(hero);
+ 
+    // Effet magnétique léger sur les boutons principaux
+    document.querySelectorAll('.magnetic').forEach(function (btn) {
+        btn.addEventListener('mousemove', function (e) {
+            var rect = btn.getBoundingClientRect();
+            var x = e.clientX - rect.left - rect.width / 2;
+            var y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = 'translate(' + x * 0.2 + 'px,' + y * 0.3 + 'px)';
+        });
+        btn.addEventListener('mouseleave', function () {
+            btn.style.transform = 'translate(0,0)';
+        });
+    });
+});
+ 
+function openLightbox(src) {
+    var lightbox = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
 }
-</style>
+function closeLightbox() {
+    var lightbox = document.getElementById('lightbox');
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+}
+</script>
  
 {% endblock %}
- 
